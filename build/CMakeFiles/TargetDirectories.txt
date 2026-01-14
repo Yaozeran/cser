@@ -1,0 +1,3 @@
+/Users/zeranyao/Projects/storage/cser/build/CMakeFiles/cser.dir
+/Users/zeranyao/Projects/storage/cser/build/CMakeFiles/edit_cache.dir
+/Users/zeranyao/Projects/storage/cser/build/CMakeFiles/rebuild_cache.dir

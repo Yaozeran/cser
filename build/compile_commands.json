@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/zeranyao/Projects/storage/cser/build",
+  "command": "/usr/bin/clang++   -g -std=gnu++2b -arch arm64 -o CMakeFiles/cser.dir/test/main.cc.o -c /Users/zeranyao/Projects/storage/cser/test/main.cc",
+  "file": "/Users/zeranyao/Projects/storage/cser/test/main.cc",
+  "output": "CMakeFiles/cser.dir/test/main.cc.o"
+}
+]
