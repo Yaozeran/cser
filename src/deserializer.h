@@ -63,7 +63,9 @@ class byte_deserializer : public deserializer<byte_deserializer>
 
   void read(void* data, std::streamsize size) {
     auto const read_size = stream_.rdbuf()->sgetn( reinterpret_cast<char*>( data ), size );
-    if(read_size != size) { /* todo */}
+    if(read_size != size) { 
+      std::cout << "Failed to read " + std::to_string(size) + " bytes from input stream! Read " << std::to_string(read_size) << std::endl;
+    }
   }
 
  private:

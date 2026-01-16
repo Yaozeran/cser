@@ -70,7 +70,10 @@ serialize(serializer &ser, const std::basic_string<char_t, traits, alloc> &str) 
 template<class deserializer, class char_t, class traits, class alloc>
 inline typename std::enable_if<is_deserializable<binary_data<char_t>, deserializer>::value, void>::type
 deserialize(deserializer &des, std::basic_string<char_t, traits, alloc> &str) {
-  des( make_size_tag(str.size()) );
+  size_t sz;
+  size_tag<size_t> tag = make_size_tag(sz);  // <-- use a named variable (lvalue) instead of temporary
+  des( tag );
+  str.resize(tag.size_);
   des( make_binary_data(const_cast<char_t*>(str.data()), str.size() * sizeof(char_t)) );
 }
 

@@ -19,7 +19,7 @@ struct binary_data {
 };
 
 template<class t>
-binary_data<t> make_binary_data(t&& data, size_t size) {
+inline binary_data<t> make_binary_data(t&& data, size_t size) {
   return {std::forward<t>(data), size};
 }
 
@@ -35,7 +35,7 @@ class size_tag
 };
 
 template<class t>
-size_tag<t> make_size_tag(t sz) {
+inline size_tag<t> make_size_tag(t sz) {
   return {std::forward<t>(sz)};
 }
 

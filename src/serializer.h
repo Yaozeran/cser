@@ -40,19 +40,19 @@ class serializer
   }
 
   template<typename t, enable_if<has_member_serdes<t, serializer_impl>::value> = sfinae>
-  serializer_impl& process_impl(t& obj) {
+  serializer_impl& process_impl(const t& obj) {
     access::member_serdes(*self, const_cast<t&>(obj));
     return *self;
   }
 
   template<typename t, enable_if<has_non_member_serdes<t, serializer_impl>::value> = sfinae>
-  serializer_impl& process_impl(t& obj) {
+  serializer_impl& process_impl(const t& obj) {
     serdes(*self, const_cast<t&>(obj));
     return *self;
   }
 
   template<typename t, enable_if<has_non_member_serialize<t, serializer_impl>::value> = sfinae>
-  serializer_impl& process_impl(t& obj) {
+  serializer_impl& process_impl(const t& obj) {
     serialize(*self, const_cast<t&>(obj));
     return *self;
   }

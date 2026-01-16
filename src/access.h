@@ -11,7 +11,7 @@ class access
  public:
  
   template<class cserdes, class t>
-  inline static auto member_serdes(cserdes &serdes, t cls) -> decltype(cls.serdes(serdes)) {
+  inline static auto member_serdes(cserdes &serdes, t& cls) -> decltype(cls.serdes(serdes)) {
     return cls.serdes(serdes);
   }
   
