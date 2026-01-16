@@ -3,17 +3,17 @@
 
 #include <type_traits>
 
-
 namespace cser
 {
 
 class access
 {
-
-template<class cserdes, class T>
-inline static auto member_serdes(cserdes &serdes, T cls) -> decltype(cls.serdes(serdes)) {
-  return cls.serdes(serdes);
-}
+ public:
+ 
+  template<class cserdes, class t>
+  inline static auto member_serdes(cserdes &serdes, t cls) -> decltype(cls.serdes(serdes)) {
+    return cls.serdes(serdes);
+  }
   
 };
 

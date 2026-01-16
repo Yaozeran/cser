@@ -7,33 +7,59 @@
 namespace cser
 {
 
-template<class deser_impl>
-class deser
+/*
+ * Base class: transform a serialized stream into an obj.
+ */
+template<class deserializer_impl>
+class deserializer
 {
  public:
-  deser(const deser_impl* derived) : self(derived) {}
+  deserializer(deserializer_impl* const derived) : self(derived) {}
   
-  template<typename ... types> 
-  inline deser& operator() (types& ... objs) {
-    self->process(objs);
+  template<typename... types> 
+  inline deserializer& operator() (types&& ... objs) {
+    self->process(std::forward<types>(objs)...);
     return *self;
   }
 
  private:
-  deser_impl* self;
-  
-  template<typename T>
-  void process(T obj) {
+  deserializer_impl* self;
 
+  template<typename f, typename... types>
+  inline void process(f&& first, types&&... others) {
+    self->process(std::forward<f>(first));
+    self->process(std::forward<types>(others)...);
+  }
+  
+  template<typename t>
+  inline void process(t&& obj) {
+    self->process_impl(obj);
+  }
+
+  template<typename t, enable_if<has_member_serdes<t, deserializer_impl>::value> = sfinae>
+  deserializer_impl& process_impl(t& obj) {
+    access::member_serdes(*self, obj);
+    return *self;
+  }
+
+  template<typename t, enable_if<has_non_member_serdes<t, deserializer_impl>::value> = sfinae>
+  deserializer_impl& process_impl(t& obj) {
+    serdes(*self, obj);
+    return *self;
+  }
+
+  template<typename t, enable_if<has_non_member_deserialize<t, deserializer_impl>::value> = sfinae>
+  deserializer_impl& process_impl(t& obj) {
+    deserialize(*self, obj);
+    return *self;
   }
 };
 
-class byte_deser : public deser<byte_deser>
+class byte_deserializer : public deserializer<byte_deserializer>
 {
  public:
-  template<class stream>
-  byte_deser(stream &s) : stream(s) {}
-  ~byte_deser() noexcept = default;
+  byte_deserializer(std::istream &s) : deserializer<byte_deserializer>(this), stream_(s) {}
+  ~byte_deserializer() noexcept = default;
 
   void read(void* data, std::streamsize size) {
     auto const read_size = stream_.rdbuf()->sgetn( reinterpret_cast<char*>( data ), size );
