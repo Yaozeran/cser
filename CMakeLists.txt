@@ -1,8 +1,16 @@
 cmake_minimum_required(VERSION 4.1.1)
 
-project(cser)
+project(cser LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_library(cser INTERFACE)
 
-add_executable(${PROJECT_NAME} test/main.cc)
+target_include_directories(cser
+  INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(cser
+  INTERFACE 
+    cxx_std_23
+)
